@@ -1,5 +1,6 @@
 import { auth } from './../../services/firebaseService'
 import { LoginButtonComponent } from './../login_button/loginButton.component';
+import { gotoHome } from './../../util/redirect'
 
 export const LoginButtonsComponent = {
 
@@ -43,12 +44,18 @@ export const LoginButtonsComponent = {
     afterRender() {
         LoginButtonComponent.afterRender(this.facebookButton, (successMsg) => {
             console.log("Facebook: " + successMsg);
+            // After successful log in go to home page.
+            gotoHome();
         });
         LoginButtonComponent.afterRender(this.githubButton, (successMsg) => {
             console.log("Github: " + successMsg);
+            // After successful log in go to home page.
+            gotoHome();
         });
         LoginButtonComponent.afterRender(this.googleButton, (successMsg) => {
             console.log("Google: " + successMsg);
+            // After successful log in go to home page.
+            gotoHome();
         });
     },
 }
