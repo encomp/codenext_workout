@@ -1,5 +1,3 @@
-
-
 export function gotoHome() {
     redirectToPage("home.html");
 }
