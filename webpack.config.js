@@ -9,6 +9,7 @@ module.exports = {
   entry: {
     index: './src/index.js',
     login: './src/login.js',
+    home:  './src/home.js',
   },
   devtool: 'source-map',
   devServer: {
@@ -33,6 +34,12 @@ module.exports = {
       inject: true,
       chunks: ['login'],
       filename: 'login.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: __dirname + "/src/public/home.html",
+      inject: true,
+      chunks: ['home'],
+      filename: 'home.html'
     }),
   ],
   output: {
