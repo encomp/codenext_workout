@@ -8,6 +8,6 @@ import { ExerciseCardComponent } from './components/exercise_card/exerciseCard.c
 // Make the page visible only when the user is logged in.
 firebase.auth().onAuthStateChanged(function (newuser) {
     if (newuser) {
-        ExerciseCardComponent.init();
+        ExerciseCardComponent.init(newuser);
     }
 });
