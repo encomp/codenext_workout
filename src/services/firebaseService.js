@@ -15,5 +15,5 @@ try {
 
 export default firebase;
 export const app = firebase.app;
-export const auth = firebase.auth();
+export const auth = firebase.auth;
 export const firestore = firebase.firestore();
