@@ -22,10 +22,10 @@ export const exerciseCardTemplate = model => `
                     </div>
                 </div>
             </div>
-            <button id="${model.id}Submit" class="btn btn-secondary btn-lg btn-block" type="submit" style="margin-top: 20px;">
-                Log <i class="far fa-save"></i>
-            </button>
         </form>
+        <button id="${model.id}Submit" class="btn btn-secondary btn-lg btn-block" style="margin-top: 20px;">
+                Log <i class="far fa-save"></i>
+        </button>
     </div>
 </div>
 `;

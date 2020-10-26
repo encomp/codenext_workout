@@ -32,11 +32,13 @@ export const ExerciseCardComponent = {
             const selectComponent = document.getElementById(model.selectModel.id);
             const repetition = document.getElementById(model.id + 'Rep');
             const weight = document.getElementById(model.id + 'Weight');
-            let data = {
-                repetitions: [repetition.value],
-                weights: [weight.value]
-            };
-            saveOrUpdate(selectComponent.value, user, newDate, data);
+            if (validData(selectComponent, repetition, weight)) {
+                let data = {
+                    repetitions: [repetition.value],
+                    weights: [weight.value]
+                };
+                saveOrUpdate(selectComponent.value, user, newDate, data);
+            }
         });
         ExerciseSelectComponent.afterRender(this.model.selectModel);
     }
@@ -45,6 +47,10 @@ export const ExerciseCardComponent = {
 function getDate() {
     const currentDate = new Date();
     return currentDate.getMonth() + 1 + "-" + currentDate.getDate() + "-" + currentDate.getFullYear();
+}
+
+function validData(selectComponent, repetition, weight) {
+    return selectComponent.value !== '' && repetition.value !== '' && weight.value !== ''
 }
 
 function saveOrUpdate(exercise, user, newDate, data) {
