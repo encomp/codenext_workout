@@ -1,5 +1,5 @@
 export const exerciseSelectTemplate = model => `               
-    <label for="${model.id}"><img id="${model.id}Img" src="" /></label>
+    <label for="${model.id}"><img class="bg-light mb-3" style="padding: 15px; border-radius: 50px;" id="${model.id}Img" src="" /></label>
     <select class="custom-select" id="${model.id}" required>
         <option selected disabled value="">Choose...</option>
         <option value="abs">Abs</option>
