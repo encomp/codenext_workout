@@ -31,3 +31,35 @@ export const converterExercises = {
         return new Exercises(data.abs, data.back, data.biceps, data.chest, data.calves, data.forearms, data.quadriceps, data.shoulders, data.triceps)
     }
 }
+
+export function excercisesList(exercises) {
+    const array = [];
+    if (exercises.abs) {
+        array.push('abs');
+    }
+    if (exercises.back) {
+        array.push('back');
+    }
+    if (exercises.biceps) {
+        array.push('biceps');
+    }
+    if (exercises.chest) {
+        array.push('chest');
+    }
+    if (exercises.calves) {
+        array.push('calves');
+    }
+    if (exercises.forearms) {
+        array.push('forearms');
+    }
+    if (exercises.quadriceps) {
+        array.push('quadriceps');
+    }
+    if (exercises.shoulders) {
+        array.push('shoulders');
+    }
+    if (exercises.triceps) {
+        array.push('triceps');
+    }
+    return array;
+}
