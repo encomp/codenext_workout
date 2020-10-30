@@ -1,7 +1,8 @@
 import { exerciseCardTemplate } from './exerciseCard.template';
 import { ExerciseSelectComponent } from './../exercise_select/exerciseSelect.component';
 import { firestore } from './../../services/firebaseService';
-import { converterExercises } from './../../util/exercise';
+import { Exercises, converterExercises } from './../../util/exercise';
+import { getDate } from './../../util/date';
 
 export const ExerciseCardComponent = {
 
@@ -44,11 +45,6 @@ export const ExerciseCardComponent = {
         ExerciseSelectComponent.afterRender(this.model.selectModel);
     }
 };
-
-function getDate() {
-    const currentDate = new Date();
-    return currentDate.getMonth() + 1 + "-" + currentDate.getDate() + "-" + currentDate.getFullYear();
-}
 
 function validData(selectComponent, repetition, weight) {
     return selectComponent.value !== '' && repetition.value !== '' && weight.value !== ''
