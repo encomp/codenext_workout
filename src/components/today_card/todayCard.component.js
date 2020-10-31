@@ -7,8 +7,8 @@ import $ from 'jquery';
 
 export const TodayCardComponent = {
 
-    init(user) {
-        this.componentElement = document.querySelector('#cardTodayProgress');
+    init(idElement, user) {
+        this.componentElement = document.querySelector(idElement);
         this.model = {
             date: getDate(),
             user: user.email,
