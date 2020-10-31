@@ -3,7 +3,7 @@ import { firestore } from './../../services/firebaseService';
 import { Exercises, converterExercises, excercisesList } from './../../util/exercise';
 import { getDate } from './../../util/date';
 import { TodayItemComponent } from './../today_item/todayItem.component';
-
+import $ from 'jquery';
 
 export const TodayCardComponent = {
 
@@ -54,6 +54,7 @@ function afterRender(model) {
         let itemModel = model.exercisesModel[index];
         TodayItemComponent.afterRender(itemModel, (item) => {
             console.log(item);
+            $(`#${itemModel.id}Collapse`).collapse('toggle');
         });
     }
 }
