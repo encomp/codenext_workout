@@ -61,15 +61,13 @@ export const TodayItemDetailComponent = {
                         console.error("Error updating documents: ", error);
                     });
             } else {
-                const todayItemDetail = document.querySelector('#' + name);
                 let rep = model.data.repetitions;
                 let wei = model.data.weights;
                 model.data.repetitions = rep.slice(0, index).concat(rep.slice(index + 1, rep.length));
                 model.data.weights = wei.slice(0, index).concat(wei.slice(index + 1, wei.length));
-                console.log(model.id, model.user, model.date, model.data);
                 updateExercise(docRef, model.data)
                     .then(function () {
-                        todayItemDetail.innerHTML = '';
+                        TodayItemDetailComponent.remove(model, index);
                         TodayItemComponent.updateBadge(model);
                     }).catch(function (error) {
                         console.error("Error updating document: ", error);
@@ -77,4 +75,10 @@ export const TodayItemDetailComponent = {
             }
         });
     },
+
+    remove(model, index) {
+        const name = model.id + '_' + index + '_';
+        const todayItemDetail = document.querySelector('#' + name);
+        todayItemDetail.innerHTML = '';
+    }
 }
