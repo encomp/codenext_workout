@@ -15,9 +15,12 @@ export const TodayItemComponent = {
         exerciseBtn.addEventListener('click', event => {
             onClick(model);
         });
+        const exerciseSpinner = document.querySelector('#' + model.id + 'ItemSpinner');
         const exerciseBadge = document.querySelector('#' + model.id + 'ItemBadge');
         var docRef = firestore.collection(model.id).doc(model.user).collection("dates").doc(model.date);
         docRef.get().then(function (doc) {
+            exerciseSpinner.style.visibility = "hidden";
+            exerciseBadge.style.visibility = "visible";
             if (doc.exists) {
                 model.data = doc.data();
                 console.log("Document data:", model.data);
