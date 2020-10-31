@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const buildPath = path.resolve(__dirname, 'dist');
+const webpack = require("webpack");
 
 module.exports = {
   mode: 'development',
@@ -18,6 +19,10 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    }),
     new CopyPlugin({
       patterns: [
         { from: __dirname + "/src/public/assets", to: "assets" },
