@@ -65,33 +65,33 @@ export function excercisesList(exercises) {
 }
 
 export function disableExcercise(exercise) {
-    let data = {}; 
+    let data = {};
     if (exercise === 'abs') {
-        data = {abs: false};
+        data = { abs: false };
     }
     if (exercise === 'back') {
-        data = {back: false};
+        data = { back: false };
     }
     if (exercise === 'biceps') {
-        data = {biceps: false};
+        data = { biceps: false };
     }
     if (exercise === 'chest') {
-        data = {chest: false};
+        data = { chest: false };
     }
     if (exercise === 'calves') {
-        data = {calves: false};
+        data = { calves: false };
     }
     if (exercise === 'forearms') {
-        data = {forearms: false};
+        data = { forearms: false };
     }
     if (exercise === 'quadriceps') {
-        data = {quadriceps: false};
+        data = { quadriceps: false };
     }
     if (exercise === 'shoulders') {
-        data = {shoulders: false};
+        data = { shoulders: false };
     }
     if (exercise === 'triceps') {
-        data = {triceps: false};
+        data = { triceps: false };
     }
     return data;
 }
