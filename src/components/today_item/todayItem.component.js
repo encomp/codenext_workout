@@ -24,8 +24,6 @@ export const TodayItemComponent = {
             exerciseBadge.style.visibility = "visible";
             if (doc.exists) {
                 model.data = doc.data();
-                console.log("Model:", model);
-                console.log("Document data:", model.data);
                 exerciseBadge.innerHTML = model.data.repetitions.length;
                 let items = '';
                 for (let index = 0; index < model.data.repetitions.length; index++) {
