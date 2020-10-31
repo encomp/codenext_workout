@@ -11,7 +11,7 @@ export class Exercises {
         this.triceps = triceps;
     }
 
-    excercisesList() {
+    enabledExercises() {
         const array = [];
         if (this.abs) {
             array.push('abs');

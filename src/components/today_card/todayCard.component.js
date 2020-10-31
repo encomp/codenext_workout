@@ -25,7 +25,7 @@ export const TodayCardComponent = {
     render(componentElement, model, doc) {
         if (doc && doc.exists) {
             model.exercises = doc.data();
-            model.excercisesList = model.exercises.excercisesList();
+            model.excercisesList = model.exercises.enabledExercises();
             let itemsInnerHTML = '';
             model.exercisesModel = new Array();
             for (let index = 0; index < model.excercisesList.length; index++) {
