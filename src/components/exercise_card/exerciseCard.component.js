@@ -3,6 +3,7 @@ import { ExerciseSelectComponent } from './../exercise_select/exerciseSelect.com
 import { firestore } from './../../services/firebaseService';
 import { Exercises, converterExercises } from './../../util/exercise';
 import { getDate } from './../../util/date';
+import { TodayCardComponent } from './../today_card/todayCard.component';
 
 export const ExerciseCardComponent = {
 
@@ -27,7 +28,7 @@ export const ExerciseCardComponent = {
 
     afterRender() {
         const model = this.model;
-        const user = this.user.email;
+        const user = this.user;
         const submitBtn = document.getElementById(model.id + 'Submit');
         submitBtn.addEventListener('click', event => {
             const newDate = getDate();
@@ -39,7 +40,7 @@ export const ExerciseCardComponent = {
                     repetitions: [repetition.value],
                     weights: [weight.value]
                 };
-                saveOrUpdate(selectComponent.value, user, newDate, data);
+                saveOrUpdate(selectComponent.value, user.email, newDate, data, user);
             }
         });
         ExerciseSelectComponent.afterRender(this.model.selectModel);
@@ -50,23 +51,23 @@ function validData(selectComponent, repetition, weight) {
     return selectComponent.value !== '' && repetition.value !== '' && weight.value !== ''
 }
 
-function saveOrUpdate(exercise, user, newDate, data) {
-    const docMetaRef = firestore.collection("exercises").doc(user).collection("dates").doc(newDate);
+function saveOrUpdate(exercise, userEmail, newDate, data, user) {
+    const docMetaRef = firestore.collection("exercises").doc(userEmail).collection("dates").doc(newDate);
     docMetaRef.get().then(function (doc) {
         if (doc.exists) {
             const exercisesData = doc.data();
             exercisesData[exercise] = true;
-            updateMetaData(docMetaRef, exercisesData);
+            updateMetaData(docMetaRef, exercisesData, user);
         } else {
             const exercisesData = new Exercises(false, false, false, false, false, false, false, false, false, false);
             exercisesData[exercise] = true;
-            saveMetaData(user, newDate, exercisesData);
+            saveMetaData(userEmail, newDate, exercisesData, user);
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);
     });
 
-    const docRef = firestore.collection(exercise).doc(user).collection("dates").doc(newDate);
+    const docRef = firestore.collection(exercise).doc(userEmail).collection("dates").doc(newDate);
     docRef.get().then(function (doc) {
         if (doc.exists) {
             const currentData = doc.data();
@@ -76,19 +77,20 @@ function saveOrUpdate(exercise, user, newDate, data) {
             }
             updateExercise(docRef, mergeData);
         } else {
-            saveExercise(exercise, user, newDate, data);
+            saveExercise(exercise, userEmail, newDate, data);
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);
     });
 }
 
-function updateMetaData(docRef, data) {
+function updateMetaData(docRef, data, user) {
     return docRef
         .withConverter(converterExercises)
         .update(data)
         .then(function () {
             console.log("Document successfully updated!");
+            TodayCardComponent.init(user);
         })
         .catch(function (error) {
             console.error("Error updating document: ", error);
@@ -105,15 +107,16 @@ function updateExercise(docRef, data) {
         });
 }
 
-function saveMetaData(user, newDate, data) {
+function saveMetaData(userEmail, newDate, data, user) {
     firestore.collection("exercises")
-        .doc(user)
+        .doc(userEmail)
         .collection("dates")
         .doc(newDate)
         .withConverter(converterExercises)
         .set(data)
         .then(function (docRef) {
             console.log("Document written with ID: ", docRef);
+            TodayCardComponent.init(user);
         }).catch(function (error) {
             console.error("Error adding document: ", error);
         });
