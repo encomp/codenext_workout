@@ -1,5 +1,5 @@
 export const todayItemTemplate = model => `
-<div class="card">
+<div id="${model.id}Card" class="card">
     <div class="card-header d-flex justify-content-between align-items-center" id="headingOne">
         <img src="${model.image}">
         <button id="${model.id}ItemBtn" type="button" class="btn btn-dark">${model.label}</button>

@@ -43,4 +43,9 @@ export const TodayItemComponent = {
             console.log("Error getting document:", error);
         });
     },
+
+    remove(model) {
+        const card = document.querySelector('#' + model.id + 'Card');
+        card.innerHTML = '';
+    },
 }
