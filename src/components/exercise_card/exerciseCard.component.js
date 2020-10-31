@@ -8,9 +8,9 @@ import { TodayCardComponent } from './../today_card/todayCard.component';
 
 export const ExerciseCardComponent = {
 
-    init(user) {
+    init(idElement, user) {
         this.user = user;
-        this.componentElement = document.querySelector('#cardExercise');
+        this.componentElement = document.querySelector(idElement);
         this.model = {
             id: 'log-exercise-card',
             selectModel: {
