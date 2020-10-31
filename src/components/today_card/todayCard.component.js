@@ -2,16 +2,15 @@ import { todayCardTemplate } from './todayCard.template';
 import { TodayItemComponent } from './../today_item/todayItem.component';
 import { getExerciseDoc } from './../../repository/metadata';
 import { Exercises } from './../../util/exercise';
-import { getDate } from './../../util/date';
 import $ from 'jquery';
 
 export const TodayCardComponent = {
 
-    init(idElement, user) {
+    init(idElement, user, date) {
         this.idElement = idElement;
         this.componentElement = document.querySelector(this.idElement);
         this.model = {
-            date: getDate(),
+            date: date,
             user: user,
         };
         this.load();
