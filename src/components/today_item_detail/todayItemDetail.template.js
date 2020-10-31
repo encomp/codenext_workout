@@ -1,5 +1,5 @@
 export const todayItemDetailTemplate = (name, repetitions, weight) => `
-<form>
+<form id="${name}">
     <div class="form-group row">
         <label for="repetitions" class="col-sm-2 col-form-label">
             <i class="fas fa-redo center">  : </i>

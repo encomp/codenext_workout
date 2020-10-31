@@ -27,7 +27,24 @@ export const TodayItemDetailComponent = {
         });
         const deleteBtn = document.querySelector('#' + name + 'BtnDelete');
         deleteBtn.addEventListener('click', event => {
-            console.log(name + 'delete');
+            if (model.data.repetitions.length == 1) {
+                
+            } else {
+                let rep = model.data.repetitions;
+                let wei = model.data.weights;
+                model.data.repetitions = rep.slice(0, index).concat(rep.slice(index + 1, rep.length));
+                model.data.weights = wei.slice(0, index).concat(wei.slice(index + 1, wei.length));
+                console.log(model.id, model.user, model.date, model.data);
+                const docRef = getExerciseRef(model.id, model.user, model.date);
+                updateExercise(docRef, model.data)
+                    .then(function () {
+                        console.log("Document successfully updated!");
+                    }).catch(function (error) {
+                        console.error("Error updating document: ", error);
+                    });
+            }
+            const row = document.querySelector('#' + name);
+            row.innerHTML = '';
         });
     },
 }
