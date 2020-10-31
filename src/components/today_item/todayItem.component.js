@@ -44,6 +44,11 @@ export const TodayItemComponent = {
         });
     },
 
+    updateBadge(model) {
+        const exerciseBadge = document.querySelector('#' + model.id + 'ItemBadge');
+        exerciseBadge.innerHTML = model.data.repetitions.length;
+    },
+
     remove(model) {
         const card = document.querySelector('#' + model.id + 'Card');
         card.innerHTML = '';
