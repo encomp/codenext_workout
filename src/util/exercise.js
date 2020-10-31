@@ -95,3 +95,35 @@ export function disableExcercise(exercise) {
     }
     return data;
 }
+
+export function shouldDeleteExcercises(exercises) {
+    let remove = true;
+    if (exercises.abs) {
+        remove = false;
+    }
+    if (exercises.back) {
+        remove = false;
+    }
+    if (exercises.biceps) {
+        remove = false;
+    }
+    if (exercises.chest) {
+        remove = false;
+    }
+    if (exercises.calves) {
+        remove = false;
+    }
+    if (exercises.forearms) {
+        remove = false;
+    }
+    if (exercises.quadriceps) {
+        remove = false;
+    }
+    if (exercises.shoulders) {
+        remove = false;
+    }
+    if (exercises.triceps) {
+        remove = false;
+    }
+    return remove;
+}
