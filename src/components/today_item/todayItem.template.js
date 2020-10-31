@@ -9,8 +9,9 @@ export const todayItemTemplate = model => `
         <span id="${model.id}ItemBadge" class="badge badge-pill badge-dark" style="visibility: hidden"></span>
     </div>
     <div id="${model.id}Collapse" class="collapse" aria-labelledby="headingOne" data-parent="#todayCardAccordion">
-      <div id="${model.id}Details" class="card-body bg-dark">
-        Details
+      <div class="card-body bg-dark">
+        <div id="${model.id}Alert"></div>
+        <div id="${model.id}Details"></div>
       </div>
     </div>
 </div>
