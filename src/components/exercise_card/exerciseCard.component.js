@@ -8,9 +8,10 @@ import { TodayCardComponent } from './../today_card/todayCard.component';
 
 export const ExerciseCardComponent = {
 
-    init(idElement, user) {
+    init(idElement, user, todayCardId) {
         this.user = user;
         this.componentElement = document.querySelector(idElement);
+        this.todayCardId = todayCardId;
         this.model = {
             id: 'log-exercise-card',
             selectModel: {
@@ -30,6 +31,7 @@ export const ExerciseCardComponent = {
     afterRender() {
         const model = this.model;
         const user = this.user;
+        const todayCardId = this.todayCardId;
         const submitBtn = document.getElementById(model.id + 'Submit');
         submitBtn.addEventListener('click', event => {
             const newDate = getDate();
@@ -41,7 +43,7 @@ export const ExerciseCardComponent = {
                     repetitions: [repetition.value],
                     weights: [weight.value]
                 };
-                saveOrUpdate(selectComponent.value, user.email, newDate, data, user);
+                saveOrUpdate(selectComponent.value, user, newDate, data, todayCardId);
             }
         });
         ExerciseSelectComponent.afterRender(this.model.selectModel);
@@ -52,7 +54,7 @@ function validData(selectComponent, repetition, weight) {
     return selectComponent.value !== '' && repetition.value !== '' && weight.value !== ''
 }
 
-function saveOrUpdate(exercise, userEmail, newDate, data, user) {
+function saveOrUpdate(exercise, userEmail, newDate, data, todayCardId) {
     const docMetaRef = getMetaDataRef(userEmail, newDate);
     docMetaRef.get().then(function (doc) {
         if (doc.exists) {
@@ -61,7 +63,7 @@ function saveOrUpdate(exercise, userEmail, newDate, data, user) {
             updateMetaData(docMetaRef, exercisesData)
                 .then(function () {
                     console.log("Document successfully updated!");
-                    TodayCardComponent.init(user);
+                    TodayCardComponent.init(todayCardId, userEmail);
                 })
                 .catch(function (error) {
                     console.error("Error updating document: ", error);
@@ -72,7 +74,7 @@ function saveOrUpdate(exercise, userEmail, newDate, data, user) {
             saveMetaData(userEmail, newDate, exercisesData)
                 .then(function (docRef) {
                     console.log("Document written with ID: ", docRef);
-                    TodayCardComponent.init(user);
+                    TodayCardComponent.init(todayCardId, userEmail);
                 }).catch(function (error) {
                     console.error("Error adding document: ", error);
                 });

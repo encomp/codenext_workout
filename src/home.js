@@ -9,7 +9,8 @@ import { TodayCardComponent } from './components/today_card/todayCard.component'
 // Make the page visible only when the user is logged in.
 firebase.auth().onAuthStateChanged(function (newuser) {
     if (newuser) {
-        ExerciseCardComponent.init('#cardExercise', newuser);
-        TodayCardComponent.init('#cardTodayProgress', newuser.email);
+        const todayCardId = '#cardTodayProgress';
+        ExerciseCardComponent.init('#cardExercise', newuser.email, todayCardId);
+        TodayCardComponent.init(todayCardId, newuser.email);
     }
 });
