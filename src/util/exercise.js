@@ -11,6 +11,7 @@ export class Exercises {
         this.triceps = triceps;
     }
 
+    // Provides an array of strings with the exercises that are enabled.
     enabledExercises() {
         const array = [];
         if (this.abs) {
@@ -42,8 +43,42 @@ export class Exercises {
         }
         return array;
     }
+
+    // Returns true if all the exercies are not enabled.
+    shouldDelete() {
+        let remove = true;
+        if (this.abs) {
+            remove = false;
+        }
+        if (this.back) {
+            remove = false;
+        }
+        if (this.biceps) {
+            remove = false;
+        }
+        if (this.chest) {
+            remove = false;
+        }
+        if (this.calves) {
+            remove = false;
+        }
+        if (this.forearms) {
+            remove = false;
+        }
+        if (this.quadriceps) {
+            remove = false;
+        }
+        if (this.shoulders) {
+            remove = false;
+        }
+        if (this.triceps) {
+            remove = false;
+        }
+        return remove;
+    }
 }
 
+// Converter that allows store and retrieval for Firestore database.
 export const converterExercises = {
     toFirestore: function (exercises) {
         return {
@@ -64,6 +99,7 @@ export const converterExercises = {
     }
 }
 
+// Provides an exercise that will be diabled.
 export function disableExcercise(exercise) {
     let data = {};
     if (exercise === 'abs') {
@@ -94,36 +130,4 @@ export function disableExcercise(exercise) {
         data = { triceps: false };
     }
     return data;
-}
-
-export function shouldDeleteExcercises(exercises) {
-    let remove = true;
-    if (exercises.abs) {
-        remove = false;
-    }
-    if (exercises.back) {
-        remove = false;
-    }
-    if (exercises.biceps) {
-        remove = false;
-    }
-    if (exercises.chest) {
-        remove = false;
-    }
-    if (exercises.calves) {
-        remove = false;
-    }
-    if (exercises.forearms) {
-        remove = false;
-    }
-    if (exercises.quadriceps) {
-        remove = false;
-    }
-    if (exercises.shoulders) {
-        remove = false;
-    }
-    if (exercises.triceps) {
-        remove = false;
-    }
-    return remove;
 }

@@ -3,7 +3,7 @@ import { TodayItemComponent } from './../today_item/todayItem.component';
 import { getExerciseRef, updateExercise } from './../../repository/exercises';
 import { getMetaDataRef, getExerciseDoc } from './../../repository/metadata';
 import { firestore } from './../../services/firebaseService';
-import { disableExcercise, shouldDeleteExcercises } from './../../util/exercise';
+import { disableExcercise } from './../../util/exercise';
 
 export const TodayItemDetailComponent = {
     render(model, index) {
@@ -46,7 +46,7 @@ export const TodayItemDetailComponent = {
                             if (doc.exists) {
                                 const exercisesData = doc.data();
                                 // Check if all the exercise are set to false.
-                                if (shouldDeleteExcercises(exercisesData)) {
+                                if (exercisesData.shouldDelete()) {
                                     metadataRef.delete().then(function () {
                                         console.log("Document successfully deleted!", exercisesData);
                                     }).catch(function (error) {
