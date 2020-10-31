@@ -10,6 +10,6 @@ import { TodayCardComponent } from './components/today_card/todayCard.component'
 firebase.auth().onAuthStateChanged(function (newuser) {
     if (newuser) {
         ExerciseCardComponent.init('#cardExercise', newuser);
-        TodayCardComponent.init('#cardTodayProgress', newuser);
+        TodayCardComponent.init('#cardTodayProgress', newuser.email);
     }
 });

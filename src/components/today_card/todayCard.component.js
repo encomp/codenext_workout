@@ -8,22 +8,26 @@ import $ from 'jquery';
 export const TodayCardComponent = {
 
     init(idElement, user) {
-        this.componentElement = document.querySelector(idElement);
+        this.idElement = idElement;
+        this.componentElement = document.querySelector(this.idElement);
         this.model = {
             date: getDate(),
-            user: user.email,
+            user: user,
         };
-        const model = this.model;
-        const componentElement = this.componentElement;
-        getExerciseDoc(model.user, model.date)
-            .then(doc => this.render(componentElement, model, doc))
+        this.load();
+    },
+
+    load() {
+        getExerciseDoc(this.model.user, this.model.date)
+            .then(doc => this.render(doc))
             .catch(function (error) {
                 console.log("Error getting document:", error);
             });
     },
 
-    render(componentElement, model, doc) {
+    render(doc) {
         if (doc && doc.exists) {
+            const model = this.model;
             model.exercises = doc.data();
             model.excercisesList = model.exercises.enabledExercises();
             let itemsInnerHTML = '';
@@ -38,18 +42,22 @@ export const TodayCardComponent = {
                 model.exercisesModel = model.exercisesModel.concat([itemModel]);
             }
             model.items = itemsInnerHTML;
-            componentElement.innerHTML = todayCardTemplate(model);
-            TodayCardComponent.afterRender(model);
+            this.componentElement.innerHTML = todayCardTemplate(model);
+            this.afterRender();
         }
     },
 
-    afterRender(model) {
-        for (let index = 0; index < model.exercisesModel.length; index++) {
-            let itemModel = model.exercisesModel[index];
+    afterRender() {
+        for (let index = 0; index < this.model.exercisesModel.length; index++) {
+            let itemModel = this.model.exercisesModel[index];
             TodayItemComponent.afterRender(itemModel, (item) => {
                 $(`#${itemModel.id}Collapse`).collapse('toggle');
             });
         }
+        let refreshBtn = document.querySelector('#_' + this.model.date + 'RefreshBtn');
+        refreshBtn.addEventListener('click', event => {
+            this.load();
+        });
     },
-} 
+}
 
