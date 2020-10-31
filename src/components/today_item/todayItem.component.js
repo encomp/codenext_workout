@@ -1,6 +1,7 @@
 import { todayItemTemplate } from './todayItem.template';
 import { imageMap } from './../../util/image';
 import { firestore } from './../../services/firebaseService';
+import { TodayItemDetailComponent } from './../today_item_detail/todayItemDetail.component';
 
 export const TodayItemComponent = {
 
@@ -23,8 +24,18 @@ export const TodayItemComponent = {
             exerciseBadge.style.visibility = "visible";
             if (doc.exists) {
                 model.data = doc.data();
+                console.log("Model:", model);
                 console.log("Document data:", model.data);
                 exerciseBadge.innerHTML = model.data.repetitions.length;
+                let items = '';
+                for (let index = 0; index < model.data.repetitions.length; index++) {
+                    items += TodayItemDetailComponent.render(model, index);
+                }
+                const details = document.querySelector('#' + model.id + 'Details');
+                details.innerHTML = items;
+                for (let index = 0; index < model.data.repetitions.length; index++) {
+                    TodayItemDetailComponent.afterRender(model, index);
+                }
             } else {
                 console.log("No such document!");
             }
