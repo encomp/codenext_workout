@@ -1,5 +1,5 @@
 import { todayItemDetailTemplate } from './todayItemDetail.template';
-import { firestore } from './../../services/firebaseService';
+import { getExerciseRef, updateExercise } from './../../repository/exercises';
 
 export const TodayItemDetailComponent = {
     render(model, index) {
@@ -13,7 +13,17 @@ export const TodayItemDetailComponent = {
         const name = model.id + '_' + index + '_';
         const saveBtn = document.querySelector('#' + name + 'BtnSave');
         saveBtn.addEventListener('click', event => {
-            console.log(name + 'save');
+            const repetition = document.querySelector('#' + name + 'Repetitions');
+            const weight = document.querySelector('#' + name + 'Weight');
+            model.data.repetitions[index] = repetition.value;
+            model.data.weights[index] = weight.value;
+            const docRef = getExerciseRef(model.id, model.user, model.date);
+            updateExercise(docRef, model.data)
+                .then(function () {
+                    console.log("Document successfully updated!");
+                }).catch(function (error) {
+                    console.error("Error updating document: ", error);
+                });
         });
         const deleteBtn = document.querySelector('#' + name + 'BtnDelete');
         deleteBtn.addEventListener('click', event => {
