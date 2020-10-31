@@ -1,7 +1,8 @@
 import { exerciseCardTemplate } from './exerciseCard.template';
 import { ExerciseSelectComponent } from './../exercise_select/exerciseSelect.component';
-import { firestore } from './../../services/firebaseService';
-import { Exercises, converterExercises } from './../../util/exercise';
+import { Exercises } from './../../util/exercise';
+import { getMetaDataRef, saveMetaData, updateMetaData } from './../../repository/metadata';
+import { getExerciseRef, saveExercise, updateExercise } from './../../repository/exercises';
 import { getDate } from './../../util/date';
 import { TodayCardComponent } from './../today_card/todayCard.component';
 
@@ -52,22 +53,35 @@ function validData(selectComponent, repetition, weight) {
 }
 
 function saveOrUpdate(exercise, userEmail, newDate, data, user) {
-    const docMetaRef = firestore.collection("exercises").doc(userEmail).collection("dates").doc(newDate);
+    const docMetaRef = getMetaDataRef(userEmail, newDate);
     docMetaRef.get().then(function (doc) {
         if (doc.exists) {
             const exercisesData = doc.data();
             exercisesData[exercise] = true;
-            updateMetaData(docMetaRef, exercisesData, user);
+            updateMetaData(docMetaRef, exercisesData)
+                .then(function () {
+                    console.log("Document successfully updated!");
+                    TodayCardComponent.init(user);
+                })
+                .catch(function (error) {
+                    console.error("Error updating document: ", error);
+                });
         } else {
             const exercisesData = new Exercises(false, false, false, false, false, false, false, false, false, false);
             exercisesData[exercise] = true;
-            saveMetaData(userEmail, newDate, exercisesData, user);
+            saveMetaData(userEmail, newDate, exercisesData)
+                .then(function (docRef) {
+                    console.log("Document written with ID: ", docRef);
+                    TodayCardComponent.init(user);
+                }).catch(function (error) {
+                    console.error("Error adding document: ", error);
+                });
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);
     });
 
-    const docRef = firestore.collection(exercise).doc(userEmail).collection("dates").doc(newDate);
+    const docRef = getExerciseRef(exercise, userEmail, newDate);
     docRef.get().then(function (doc) {
         if (doc.exists) {
             const currentData = doc.data();
@@ -75,62 +89,22 @@ function saveOrUpdate(exercise, userEmail, newDate, data, user) {
                 repetitions: currentData.repetitions.slice(0).concat(data.repetitions),
                 weights: currentData.weights.slice(0).concat(data.weights)
             }
-            updateExercise(docRef, mergeData);
+            updateExercise(docRef, mergeData)
+                .then(function () {
+                    console.log("Document successfully updated!");
+                })
+                .catch(function (error) {
+                    console.error("Error updating document: ", error);
+                });
         } else {
-            saveExercise(exercise, userEmail, newDate, data);
+            saveExercise(exercise, userEmail, newDate, data)
+                .then(function (docRef) {
+                    console.log("Document written with ID: ", docRef);
+                }).catch(function (error) {
+                    console.error("Error adding document: ", error);
+                });
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);
     });
-}
-
-function updateMetaData(docRef, data, user) {
-    return docRef
-        .withConverter(converterExercises)
-        .update(data)
-        .then(function () {
-            console.log("Document successfully updated!");
-            TodayCardComponent.init(user);
-        })
-        .catch(function (error) {
-            console.error("Error updating document: ", error);
-        });
-}
-
-function updateExercise(docRef, data) {
-    return docRef.update(data)
-        .then(function () {
-            console.log("Document successfully updated!");
-        })
-        .catch(function (error) {
-            console.error("Error updating document: ", error);
-        });
-}
-
-function saveMetaData(userEmail, newDate, data, user) {
-    firestore.collection("exercises")
-        .doc(userEmail)
-        .collection("dates")
-        .doc(newDate)
-        .withConverter(converterExercises)
-        .set(data)
-        .then(function (docRef) {
-            console.log("Document written with ID: ", docRef);
-            TodayCardComponent.init(user);
-        }).catch(function (error) {
-            console.error("Error adding document: ", error);
-        });
-}
-
-function saveExercise(exercise, user, newDate, data) {
-    firestore.collection(exercise)
-        .doc(user)
-        .collection("dates")
-        .doc(newDate)
-        .set(data)
-        .then(function (docRef) {
-            console.log("Document written with ID: ", docRef);
-        }).catch(function (error) {
-            console.error("Error adding document: ", error);
-        });
 }
