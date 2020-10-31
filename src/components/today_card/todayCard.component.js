@@ -1,8 +1,8 @@
 import { todayCardTemplate } from './todayCard.template';
-import { firestore } from './../../services/firebaseService';
-import { Exercises, converterExercises, excercisesList } from './../../util/exercise';
-import { getDate } from './../../util/date';
 import { TodayItemComponent } from './../today_item/todayItem.component';
+import { getExerciseDoc } from './../../repository/metadata';
+import { Exercises } from './../../util/exercise';
+import { getDate } from './../../util/date';
 import $ from 'jquery';
 
 export const TodayCardComponent = {
@@ -15,20 +15,17 @@ export const TodayCardComponent = {
         };
         const model = this.model;
         const componentElement = this.componentElement;
-        const docRef = firestore.collection("exercises")
-            .doc(model.user)
-            .collection("dates")
-            .doc(model.date)
-            .withConverter(converterExercises);
-        docRef.get().then(doc => this.render(componentElement, doc, model)).catch(function (error) {
-            console.log("Error getting document:", error);
-        });
+        getExerciseDoc(model.user, model.date)
+            .then(doc => this.render(componentElement, model, doc))
+            .catch(function (error) {
+                console.log("Error getting document:", error);
+            });
     },
 
-    render(componentElement, doc, model) {
-        if (doc.exists) {
+    render(componentElement, model, doc) {
+        if (doc && doc.exists) {
             model.exercises = doc.data();
-            model.excercisesList = excercisesList(model.exercises);
+            model.excercisesList = model.exercises.excercisesList();
             let itemsInnerHTML = '';
             model.exercisesModel = new Array();
             for (let index = 0; index < model.excercisesList.length; index++) {
@@ -42,19 +39,17 @@ export const TodayCardComponent = {
             }
             model.items = itemsInnerHTML;
             componentElement.innerHTML = todayCardTemplate(model);
-            afterRender(model);
-        } else {
-            console.log("No such document!");
+            TodayCardComponent.afterRender(model);
         }
     },
-}
 
-function afterRender(model) {
-    for (let index = 0; index < model.exercisesModel.length; index++) {
-        let itemModel = model.exercisesModel[index];
-        TodayItemComponent.afterRender(itemModel, (item) => {
-            console.log(item);
-            $(`#${itemModel.id}Collapse`).collapse('toggle');
-        });
-    }
-}
+    afterRender(model) {
+        for (let index = 0; index < model.exercisesModel.length; index++) {
+            let itemModel = model.exercisesModel[index];
+            TodayItemComponent.afterRender(itemModel, (item) => {
+                $(`#${itemModel.id}Collapse`).collapse('toggle');
+            });
+        }
+    },
+} 
+

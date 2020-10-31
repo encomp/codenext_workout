@@ -10,6 +10,38 @@ export class Exercises {
         this.shoulders = shoulders;
         this.triceps = triceps;
     }
+
+    excercisesList() {
+        const array = [];
+        if (this.abs) {
+            array.push('abs');
+        }
+        if (this.back) {
+            array.push('back');
+        }
+        if (this.biceps) {
+            array.push('biceps');
+        }
+        if (this.chest) {
+            array.push('chest');
+        }
+        if (this.calves) {
+            array.push('calves');
+        }
+        if (this.forearms) {
+            array.push('forearms');
+        }
+        if (this.quadriceps) {
+            array.push('quadriceps');
+        }
+        if (this.shoulders) {
+            array.push('shoulders');
+        }
+        if (this.triceps) {
+            array.push('triceps');
+        }
+        return array;
+    }
 }
 
 export const converterExercises = {
@@ -30,38 +62,6 @@ export const converterExercises = {
         const data = snapshot.data(options);
         return new Exercises(data.abs, data.back, data.biceps, data.chest, data.calves, data.forearms, data.quadriceps, data.shoulders, data.triceps)
     }
-}
-
-export function excercisesList(exercises) {
-    const array = [];
-    if (exercises.abs) {
-        array.push('abs');
-    }
-    if (exercises.back) {
-        array.push('back');
-    }
-    if (exercises.biceps) {
-        array.push('biceps');
-    }
-    if (exercises.chest) {
-        array.push('chest');
-    }
-    if (exercises.calves) {
-        array.push('calves');
-    }
-    if (exercises.forearms) {
-        array.push('forearms');
-    }
-    if (exercises.quadriceps) {
-        array.push('quadriceps');
-    }
-    if (exercises.shoulders) {
-        array.push('shoulders');
-    }
-    if (exercises.triceps) {
-        array.push('triceps');
-    }
-    return array;
 }
 
 export function disableExcercise(exercise) {
