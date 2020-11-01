@@ -2,6 +2,10 @@ export function gotoHome() {
     redirectToPage("home.html");
 }
 
+export function gotoIndex() {
+    redirectToPage("index.html");
+}
+
 export function redirectToPage(page) {
     let url = window.location.href;
     let urlSplit = url.split('/');
