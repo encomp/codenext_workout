@@ -29,10 +29,10 @@ export const TodayItemDetailComponent = {
             updateExercise(docRef, model.data)
                 .then(function () {
                     const alert = AlertComponent.renderBasic("alert-success", "Document updated <strong>successfully<strong>.");
-                    TodayItemComponent.displayDetailsAlert(model, alert);
+                    TodayItemComponent.displayAlert(model, alert);
                 }).catch(function (error) {
                     const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>updating</strong> document.");
-                    TodayItemComponent.displayDetailsAlert(model, alert);
+                    TodayItemComponent.displayAlert(model, alert);
                     console.error("Error deleting document: ", model.data, error);
                 });
         });
@@ -60,19 +60,19 @@ export const TodayItemDetailComponent = {
                                         console.log("Document successfully deleted!", exercisesData);
                                     }).catch(function (error) {
                                         const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>deleting</strong> document.");
-                                        TodayItemComponent.displayDetailsAlert(model, alert);
+                                        TodayCardComponent.displayAlert(model.date, alert);
                                         console.error("Error deleting document: ", exercisesData, error);
                                     });
                                 }
                             }
                         }).catch(function (error) {
                             const alert = AlertComponent.renderBasic("alert-warning", "Error <strong>retrieving</strong> the document.");
-                            TodayItemComponent.displayDetailsAlert(model, alert);
+                            TodayCardComponent.displayAlert(model.date, alert);
                             console.error("Error getting document: ", model.user, model.date, error);
                         });
                     }).catch(function (error) {
                         const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>deleting</strong> document.");
-                        TodayItemComponent.displayDetailsAlert(model, alert);
+                        TodayCardComponent.displayAlert(model.date, alert);
                         console.error("Error deleting document: ", model, error);
                     });
             } else {
@@ -85,24 +85,17 @@ export const TodayItemDetailComponent = {
                 console.log(model);
                 updateExercise(docRef, model.data)
                     .then(function () {
-                        TodayItemDetailComponent.remove(model, index);
                         TodayItemComponent.renderDetails(model);
                         const alert = AlertComponent.renderBasic("alert-info", "Document <strong>deleted</strong> successfully.");
-                        TodayItemComponent.displayHeaderAlert(model, alert);
+                        TodayCardComponent.displayAlert(model.date, alert);
                     }).catch(function (error) {
                         const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>updating</strong> document.");
-                        TodayItemComponent.displayDetailsAlert(model, alert);
+                        TodayCardComponent.displayAlert(model.date, alert);
                         console.error("Error updating document: ", model.data, error);
                     });
             }
         });
     },
-
-    remove(model, index) {
-        const name = model.id + '_' + index + '_';
-        const todayItemDetail = document.querySelector('#' + name);
-        todayItemDetail.innerHTML = '';
-    }
 }
 
 function removeIndex(array, index) {
