@@ -66,6 +66,10 @@ export const HistoryCardComponent = {
     },
 
     afterRender() {
+        const refreshBtn = document.getElementById('historyRefreshBtn');
+        refreshBtn.addEventListener('click', event => {
+            this.init(this.idElement, this.model.user);
+        });
         const priorBtn = document.getElementById(this.model.priorPageBtnId);
         priorBtn.addEventListener('click', event => {
             if (this.model.pages.length >= 2) {
