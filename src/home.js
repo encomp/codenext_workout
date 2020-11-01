@@ -4,6 +4,7 @@ import './scss/login.scss';
 import * as firebase from 'firebase/app';
 import { ExerciseCardComponent } from './components/exercise_card/exerciseCard.component';
 import { TodayCardComponent } from './components/today_card/todayCard.component';
+import { HistoryCardComponent } from './components/history_card/historyCard.component';
 import { getDate } from './util/date';
 import { gotoIndex } from './util/redirect'
 
@@ -34,7 +35,7 @@ firebase.auth().onAuthStateChanged(function (newuser) {
         const todayCardId = '#cardTodayProgress';
         ExerciseCardComponent.init('#cardExercise', newuser.email, todayCardId, forDate);
         TodayCardComponent.init(todayCardId, newuser.email, forDate);
-
+        HistoryCardComponent.init('#cardHistory', newuser.email);
     } else {
         gotoIndex();
     }
