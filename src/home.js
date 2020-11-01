@@ -2,7 +2,6 @@ import 'bootstrap';
 import './scss/index.scss';
 import './scss/login.scss';
 import * as firebase from 'firebase/app';
-import { auth } from './services/firebaseService'
 import { ExerciseCardComponent } from './components/exercise_card/exerciseCard.component';
 import { TodayCardComponent } from './components/today_card/todayCard.component';
 import { getDate } from './util/date';
