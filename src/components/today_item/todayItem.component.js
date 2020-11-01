@@ -1,6 +1,6 @@
 import { todayItemTemplate } from './todayItem.template';
 import { imageMap } from './../../util/image';
-import { firestore } from './../../services/firebaseService';
+import { getExercise } from './../../repository/exercises';
 import { TodayItemDetailComponent } from './../today_item_detail/todayItemDetail.component';
 
 export const TodayItemComponent = {
@@ -16,35 +16,39 @@ export const TodayItemComponent = {
         exerciseBtn.addEventListener('click', event => {
             onClick(model);
         });
-        const exerciseSpinner = document.querySelector('#' + model.id + 'ItemSpinner');
-        const exerciseBadge = document.querySelector('#' + model.id + 'ItemBadge');
-        var docRef = firestore.collection(model.id).doc(model.user).collection("dates").doc(model.date);
-        docRef.get().then(function (doc) {
-            exerciseSpinner.style.visibility = "hidden";
-            exerciseBadge.style.visibility = "visible";
-            if (doc.exists) {
-                model.data = doc.data();
-                exerciseBadge.innerHTML = model.data.repetitions.length;
-                let items = '';
-                for (let index = 0; index < model.data.repetitions.length; index++) {
-                    items += TodayItemDetailComponent.render(model, index);
+        getExercise(model.id, model.user, model.date)
+            .then(function (doc) {
+                if (doc.exists) {
+                    model.data = doc.data();
+                    TodayItemComponent.renderDetails(model);
+                } else {
+                    console.log("No such document!");
                 }
-                const details = document.querySelector('#' + model.id + 'Details');
-                details.innerHTML = items;
-                for (let index = 0; index < model.data.repetitions.length; index++) {
-                    TodayItemDetailComponent.afterRender(model, index);
-                }
-            } else {
-                console.log("No such document!");
-            }
-        }).catch(function (error) {
-            console.log("Error getting document:", error);
-        });
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
     },
 
-    updateBadge(model) {
+    renderDetails(model) {
+        const exerciseSpinner = document.querySelector('#' + model.id + 'ItemSpinner');
         const exerciseBadge = document.querySelector('#' + model.id + 'ItemBadge');
+        exerciseSpinner.style.visibility = "hidden";
+        exerciseBadge.style.visibility = "visible";
         exerciseBadge.innerHTML = model.data.repetitions.length;
+        let items = '';
+        for (let index = 0; index < model.data.repetitions.length; index++) {
+            items += TodayItemDetailComponent.render(model, index);
+        }
+        const details = document.querySelector('#' + model.id + 'Details');
+        details.innerHTML = items;
+        for (let index = 0; index < model.data.repetitions.length; index++) {
+            TodayItemDetailComponent.afterRender(model, index);
+        }
+    },
+
+    updateAlert(model, innerHTML) {
+        const alertDiv = document.querySelector('#' + model.id + 'Alert');
+        alertDiv.innerHTML = innerHTML;
     },
 
     remove(model) {
