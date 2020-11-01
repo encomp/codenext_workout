@@ -3,7 +3,7 @@ import { AlertComponent } from './../alert/alert.component';
 import { TodayCardComponent } from './../today_card/todayCard.component';
 import { TodayItemComponent } from './../today_item/todayItem.component';
 import { getExerciseRef, updateExercise } from './../../repository/exercises';
-import { getMetaDataRef, getExerciseDoc } from './../../repository/metadata';
+import { getMetaDataRef, getMetaDataDoc } from './../../repository/metadata';
 import { firestore } from './../../services/firebaseService';
 import { disableExcercise } from './../../util/exercise';
 import $ from 'jquery';
@@ -51,7 +51,7 @@ export const TodayItemDetailComponent = {
                         const alert = AlertComponent.renderBasic("alert-info", "Document <strong>deleted</strong> successfully.");
                         TodayCardComponent.displayAlert(model.date, alert);
                         // Check if there metada should be removed.
-                        getExerciseDoc(model.user, model.date).then(function (doc) {
+                        getMetaDataDoc(model.user, model.date).then(function (doc) {
                             if (doc.exists) {
                                 const exercisesData = doc.data();
                                 // Check if all the exercise are set to false.

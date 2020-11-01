@@ -1,6 +1,6 @@
 import { todayCardTemplate } from './todayCard.template';
 import { TodayItemComponent } from './../today_item/todayItem.component';
-import { getExerciseDoc } from './../../repository/metadata';
+import { getMetaDataDoc } from './../../repository/metadata';
 import { Exercises } from './../../util/exercise';
 import $ from 'jquery';
 
@@ -17,7 +17,7 @@ export const TodayCardComponent = {
     },
 
     load() {
-        getExerciseDoc(this.model.user, this.model.date)
+        getMetaDataDoc(this.model.user, this.model.date)
             .then(doc => this.render(doc))
             .catch(function (error) {
                 console.log("Error getting document:", error);
