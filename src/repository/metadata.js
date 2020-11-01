@@ -9,6 +9,21 @@ export function getMetaDataDoc(userEmail, newDate) {
     return firestore.collection("exercises").doc(userEmail).collection("dates").doc(newDate).withConverter(converterExercises).get();
 }
 
+export function getMetaDataDocuments(userEmail, limit, startAfter, endAt) {
+    let query = firestore.collection("exercises").doc(userEmail).collection("dates");
+    if (limit) {
+        query = query.limit(limit);
+    }
+    if (startAfter) {
+        query = query.startAfter(startAfter);
+    }
+    if (endAt) {
+        query = query.endAt(endAt);
+    }
+    return query.withConverter(converterExercises).get();
+}
+
+
 export function saveMetaData(userEmail, newDate, data) {
     return firestore.collection("exercises")
         .doc(userEmail)
