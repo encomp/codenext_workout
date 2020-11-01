@@ -74,14 +74,12 @@ export const HistoryCardComponent = {
         priorBtn.addEventListener('click', event => {
             if (this.model.pages.length >= 2) {
                 this.model.pages = this.model.pages.slice(0, this.model.pages.length - 1);
-                console.log(this.model);
                 this.model.forward = false;
                 this.load();
             }
         });
         const nextBtn = document.getElementById(this.model.nextPageBtnId);
         nextBtn.addEventListener('click', event => {
-            console.log(this.model);
             this.model.forward = true;
             this.load();
         });
