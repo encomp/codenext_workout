@@ -46,8 +46,13 @@ export const TodayItemComponent = {
         }
     },
 
-    updateAlert(model, innerHTML) {
-        const alertDiv = document.querySelector('#' + model.id + 'Alert');
+    displayHeaderAlert(model, innerHTML) {
+        const alertDiv = document.querySelector('#' + model.id + 'HeaderAlert');
+        alertDiv.innerHTML = innerHTML;
+    },
+
+    displayDetailsAlert(model, innerHTML) {
+        const alertDiv = document.querySelector('#' + model.id + 'DetailsAlert');
         alertDiv.innerHTML = innerHTML;
     },
 

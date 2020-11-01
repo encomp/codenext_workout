@@ -1,9 +1,11 @@
 import { todayItemDetailTemplate } from './todayItemDetail.template';
+import { AlertComponent } from './../alert/alert.component';
 import { TodayItemComponent } from './../today_item/todayItem.component';
 import { getExerciseRef, updateExercise } from './../../repository/exercises';
 import { getMetaDataRef, getExerciseDoc } from './../../repository/metadata';
 import { firestore } from './../../services/firebaseService';
 import { disableExcercise } from './../../util/exercise';
+import $ from 'jquery';
 
 export const TodayItemDetailComponent = {
     render(model, index) {
@@ -17,6 +19,7 @@ export const TodayItemDetailComponent = {
         const name = model.id + '_' + index + '_';
         const saveBtn = document.querySelector('#' + name + 'BtnSave');
         saveBtn.addEventListener('click', event => {
+            $('#' + name + 'Alert').alert('dispose');
             const repetition = document.querySelector('#' + name + 'Repetitions');
             const weight = document.querySelector('#' + name + 'Weight');
             model.data.repetitions[index] = repetition.value;
@@ -24,9 +27,12 @@ export const TodayItemDetailComponent = {
             const docRef = getExerciseRef(model.id, model.user, model.date);
             updateExercise(docRef, model.data)
                 .then(function () {
-                    console.log("Document successfully updated!");
+                    const alert = AlertComponent.renderBasic("alert-success", "Document updated <strong>successfully<strong>.");
+                    TodayItemComponent.displayDetailsAlert(model, alert);
                 }).catch(function (error) {
-                    console.error("Error updating document: ", error);
+                    const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>updating</strong> document.");
+                    TodayItemComponent.displayDetailsAlert(model, alert);
+                    console.error("Error deleting document: ", model.data, error);
                 });
         });
         const deleteBtn = document.querySelector('#' + name + 'BtnDelete');
@@ -50,27 +56,40 @@ export const TodayItemDetailComponent = {
                                     metadataRef.delete().then(function () {
                                         console.log("Document successfully deleted!", exercisesData);
                                     }).catch(function (error) {
-                                        console.error("Error removing document: ", error);
+                                        const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>deleting</strong> document.");
+                                        TodayItemComponent.displayDetailsAlert(model, alert);
+                                        console.error("Error deleting document: ", exercisesData, error);
                                     });
                                 }
                             }
                         }).catch(function (error) {
-                            console.error("Error getting document:: ", error);
+                            const alert = AlertComponent.renderBasic("alert-warning", "Error <strong>retrieving</strong> the document.");
+                            TodayItemComponent.displayDetailsAlert(model, alert);
+                            console.error("Error getting document: ", model.user, model.date, error);
                         });
                     }).catch(function (error) {
-                        console.error("Error updating documents: ", error);
+                        const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>updating</strong> document.");
+                        TodayItemComponent.displayDetailsAlert(model, alert);
+                        console.error("Error updating document: ", model, error);
                     });
             } else {
-                let rep = model.data.repetitions;
-                let wei = model.data.weights;
-                model.data.repetitions = rep.slice(0, index).concat(rep.slice(index + 1, rep.length));
-                model.data.weights = wei.slice(0, index).concat(wei.slice(index + 1, wei.length));
+                console.log(model.data, index);
+                model.data  = {
+                    repetitions: removeIndex(model.data.repetitions, index),
+                    weights: removeIndex(model.data.weights, index)
+                };
+                console.log(model.data);
+                console.log(model);
                 updateExercise(docRef, model.data)
                     .then(function () {
                         TodayItemDetailComponent.remove(model, index);
-                        TodayItemComponent.updateBadge(model);
+                        TodayItemComponent.renderDetails(model);
+                        const alert = AlertComponent.renderBasic("alert-info", "Document <strong>deleted</strong> successfully.");
+                        TodayItemComponent.displayHeaderAlert(model, alert);
                     }).catch(function (error) {
-                        console.error("Error updating document: ", error);
+                        const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>updating</strong> document.");
+                        TodayItemComponent.displayDetailsAlert(model, alert);
+                        console.error("Error updating document: ", model.data, error);
                     });
             }
         });
@@ -81,4 +100,9 @@ export const TodayItemDetailComponent = {
         const todayItemDetail = document.querySelector('#' + name);
         todayItemDetail.innerHTML = '';
     }
+}
+
+function removeIndex(array, index) {
+    const item = array[index];
+    return array.filter(element => element !== item);
 }
