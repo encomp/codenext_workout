@@ -58,5 +58,10 @@ export const TodayCardComponent = {
             this.load();
         });
     },
+
+    displayAlert(date, innerHTML) {
+        let alertDiv = document.querySelector('#_' + date + 'Alert');
+        alertDiv.innerHTML = innerHTML;
+    },
 }
 

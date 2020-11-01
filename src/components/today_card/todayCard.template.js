@@ -18,6 +18,7 @@ export const todayCardTemplate = model => `
     </div>
     <div class="card-body text-white bg-dark mb-3">
         <p class="card-text">Your progress:</p>
+        <div id="_${model.date}Alert"></div>
         <div class="accordion" id="todayCardAccordion">
             ${model.items}
         </div>

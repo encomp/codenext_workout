@@ -1,5 +1,6 @@
 import { todayItemDetailTemplate } from './todayItemDetail.template';
 import { AlertComponent } from './../alert/alert.component';
+import { TodayCardComponent } from './../today_card/todayCard.component';
 import { TodayItemComponent } from './../today_item/todayItem.component';
 import { getExerciseRef, updateExercise } from './../../repository/exercises';
 import { getMetaDataRef, getExerciseDoc } from './../../repository/metadata';
@@ -47,6 +48,8 @@ export const TodayItemDetailComponent = {
                 batch.commit()
                     .then(function () {
                         TodayItemComponent.remove(model);
+                        const alert = AlertComponent.renderBasic("alert-info", "Document <strong>deleted</strong> successfully.");
+                        TodayCardComponent.displayAlert(model.date, alert);
                         // Check if there metada should be removed.
                         getExerciseDoc(model.user, model.date).then(function (doc) {
                             if (doc.exists) {
@@ -68,9 +71,9 @@ export const TodayItemDetailComponent = {
                             console.error("Error getting document: ", model.user, model.date, error);
                         });
                     }).catch(function (error) {
-                        const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>updating</strong> document.");
+                        const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>deleting</strong> document.");
                         TodayItemComponent.displayDetailsAlert(model, alert);
-                        console.error("Error updating document: ", model, error);
+                        console.error("Error deleting document: ", model, error);
                     });
             } else {
                 console.log(model.data, index);
