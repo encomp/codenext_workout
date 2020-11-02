@@ -6,6 +6,10 @@ export function gotoIndex() {
     redirectToPage("index.html");
 }
 
+export function gotoLogin() {
+    redirectToPage("login.html");
+}
+
 export function redirectToPage(page) {
     let url = window.location.href;
     let urlSplit = url.split('/');
