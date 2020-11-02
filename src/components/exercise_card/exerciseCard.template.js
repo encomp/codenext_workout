@@ -1,6 +1,16 @@
 export const exerciseCardTemplate = model => `
 <div class="card bg-dark mb-3">
+    <div class="card-header">
+        <div class="card-title">
+            <div class="col-lg-10">
+                <span class="align-middle" style="font-size: 1.25rem;">
+                Log your Progress:
+                </span>
+            </div>
+        </div>
+    </div>
     <div class="card-body">
+        <div id="${model.id}Alert"></div>
         <form class="was-validated">
             <div class="form-row">
                 <div id="${model.id}Select" class="col">   

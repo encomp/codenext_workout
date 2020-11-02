@@ -1,9 +1,9 @@
 import { exerciseCardTemplate } from './exerciseCard.template';
 import { ExerciseSelectComponent } from './../exercise_select/exerciseSelect.component';
+import { AlertComponent } from './../alert/alert.component';
 import { Exercises } from './../../util/exercise';
 import { getMetaDataRef, saveMetaData, updateMetaData } from './../../repository/metadata';
 import { getExerciseRef, saveExercise, updateExercise } from './../../repository/exercises';
-import { getDate } from './../../util/date';
 import { TodayCardComponent } from './../today_card/todayCard.component';
 
 export const ExerciseCardComponent = {
@@ -47,7 +47,12 @@ export const ExerciseCardComponent = {
             }
         });
         ExerciseSelectComponent.afterRender(this.model.selectModel);
-    }
+    },
+
+    displayAlert(innerHTML) {
+        let alertDiv = document.querySelector('#log-exercise-cardAlert');
+        alertDiv.innerHTML = innerHTML;
+    },
 };
 
 function validData(selectComponent, repetition, weight) {
@@ -62,25 +67,33 @@ function saveOrUpdate(exercise, userEmail, newDate, data, todayCardId) {
             exercisesData[exercise] = true;
             updateMetaData(docMetaRef, exercisesData)
                 .then(function () {
-                    console.log("Document successfully updated!");
                     TodayCardComponent.init(todayCardId, userEmail, newDate);
+                    const alert = AlertComponent.renderBasic("alert-success", "Document <strong>updated</strong> successfully.");
+                    ExerciseCardComponent.displayAlert(alert);
                 })
                 .catch(function (error) {
                     console.error("Error updating document: ", error);
+                    const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>updating</strong> document.");
+                    ExerciseCardComponent.displayAlert(alert);
                 });
         } else {
             const exercisesData = new Exercises(false, false, false, false, false, false, false, false, false, false);
             exercisesData[exercise] = true;
             saveMetaData(userEmail, newDate, exercisesData)
                 .then(function (docRef) {
-                    console.log("Document written with ID: ", docRef);
                     TodayCardComponent.init(todayCardId, userEmail, newDate);
+                    const alert = AlertComponent.renderBasic("alert-success", "Document <strong>saved</strong> successfully.");
+                    ExerciseCardComponent.displayAlert(alert);
                 }).catch(function (error) {
                     console.error("Error adding document: ", error);
+                    const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>adding</strong> document.");
+                    ExerciseCardComponent.displayAlert(alert);
                 });
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);
+        const alert = AlertComponent.renderBasic("alert-warning", "Error <strong>getting</strong> document.");
+        ExerciseCardComponent.displayAlert(alert);
     });
 
     const docRef = getExerciseRef(exercise, userEmail, newDate);
@@ -93,20 +106,28 @@ function saveOrUpdate(exercise, userEmail, newDate, data, todayCardId) {
             }
             updateExercise(docRef, mergeData)
                 .then(function () {
-                    console.log("Document successfully updated!");
+                    const alert = AlertComponent.renderBasic("alert-success", "Document <strong>updated</strong> successfully.");
+                    ExerciseCardComponent.displayAlert(alert);
                 })
                 .catch(function (error) {
                     console.error("Error updating document: ", error);
+                    const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>updating</strong> document.");
+                    ExerciseCardComponent.displayAlert(alert);
                 });
         } else {
             saveExercise(exercise, userEmail, newDate, data)
                 .then(function (docRef) {
-                    console.log("Document written with ID: ", docRef);
+                    const alert = AlertComponent.renderBasic("alert-success", "Document <strong>saved</strong> successfully.");
+                    ExerciseCardComponent.displayAlert(alert);
                 }).catch(function (error) {
                     console.error("Error adding document: ", error);
+                    const alert = AlertComponent.renderBasic("alert-danger", "Error <strong>adding</strong> document.");
+                    ExerciseCardComponent.displayAlert(alert);
                 });
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);
+        const alert = AlertComponent.renderBasic("alert-warning", "Error <strong>getting</strong> document.");
+        ExerciseCardComponent.displayAlert(alert);
     });
 }
