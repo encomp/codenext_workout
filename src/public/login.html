@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,6 +15,7 @@
   <!-- initialize the SDK after all desired features are loaded -->
   <script defer src="/__/firebase/init.js"></script>
 </head>
+
 <body class="text-center">
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
@@ -26,13 +28,15 @@
       </div>
     </header>
 
-    <!-- Grid row -->
     <div class="container">
-      <div class="row justify-content-md-center">
-        <h1 class="cover-heading">Choose a Service:</h1>
-        <br />
-      </div>
-      <div id="loginButtons" class="row justify-content-md-center">
+      <div class="jumbotron bg-dark text-white">
+        <h1 class="display-4">Welcome to Workout!</h1>
+        <h1 class="lead">Please select one of the following services to access.</h1>
+        <hr class="my-4">
+        <p>You can use your Facebook, Github or Google account to gain access.</p>
+        <hr class="my-4">
+        <div id="loginButtons" class="row justify-content-md-center">
+        </div>
       </div>
     </div>
 
@@ -46,4 +50,5 @@
 </body>
 <!-- Bootstrap core CSS -->
 <script src="./login.js"></script>
+
 </html>
