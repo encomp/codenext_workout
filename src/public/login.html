@@ -22,6 +22,8 @@
   <script defer src="/__/firebase/7.24.0/firebase-storage.js"></script>
   <!-- initialize the SDK after all desired features are loaded -->
   <script defer src="/__/firebase/init.js"></script>
+  <!-- Bootstrap core CSS -->
+  <script src="./login.js"></script>
 </head>
 
 <body class="text-center">
@@ -46,6 +48,9 @@
             class="text-monospace font-weight-bold">Google</strong> account to gain access.</p>
         <hr class="my-4">
         <div id="loginButtons" class="row justify-content-md-center">
+          <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
         </div>
       </div>
     </div>
@@ -58,7 +63,5 @@
     </footer>
   </div>
 </body>
-<!-- Bootstrap core CSS -->
-<script src="./login.js"></script>
 
 </html>
