@@ -40,3 +40,5 @@ firebase.auth().onAuthStateChanged(function (newuser) {
         gotoIndex();
     }
 });
+
+console.log(firebase.auth().currentUser);
